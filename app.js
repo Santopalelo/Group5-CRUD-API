@@ -15,13 +15,26 @@ app.get('/products', (req, res) => {
   res.send(products);
 })
 
-// end point for creating a product
+// end point for Adding a product
 app.post('/products', (req, res) => {
   const { name, price } = req.body;
   const newProduct = { id: products.length + 1, name, price };
   products.push(newProduct);
   res.status(201).json(newProduct);
 })
+
+// End point for Editing the product
+
+app.patch( '/products/:id', (req, res) => {
+    const product = products.find(t => t.id === parseInt(req.params.id)); //find array
+    if (!product) return res.status(404).json({message: 'Todo not found'})
+    Object.assign(product, req.body)
+    res.status(200).json(product)
+})
+
+
+
+
 
 
 app.listen(port, () => {
