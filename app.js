@@ -32,12 +32,15 @@ app.patch( '/products/:id', (req, res) => {
     res.status(200).json(product)
 })
 
-//End point to list 1 product
-app.get('/products/:id', (req, res) => {
-    const newProduct = products.find( t => t.id === parseInt(req.params.id));
-    if (!newProduct) return res.status(404).json({message: "Product not found"});
-    res.status(201).json(newProduct);
-});
+
+//// End point for removing the product
+app.delete('/products/:id', (req, res) => {
+  const productIndex = products.findIndex(t => t.id === parseInt(req.params.id));
+  if (productIndex === -1) return res.status(404).json({message: 'Product not found'});
+  products.splice(productIndex, 1);
+  res.status(200).json({message: 'Product deleted successfully'});
+})
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
